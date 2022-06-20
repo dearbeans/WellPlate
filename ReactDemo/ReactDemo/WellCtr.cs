@@ -18,7 +18,29 @@ namespace ReactDemo
     public class WellCtr : ToggleButton
     {
 
-     
+
+        public int RowSortingIndex
+        {
+            get { return (int)GetValue(RowSortingIndexProperty); }
+            set { SetValue(RowSortingIndexProperty, value); }
+        }
+
+        public static readonly DependencyProperty RowSortingIndexProperty =
+            DependencyProperty.Register("RowSortingIndex", typeof(int), typeof(WellCtr), new PropertyMetadata(0));
+
+
+
+        public int ColumnSortingIndex
+        {
+            get { return (int)GetValue(ColumnSortingIndexProperty); }
+            set { SetValue(ColumnSortingIndexProperty, value); }
+        }
+
+        public static readonly DependencyProperty ColumnSortingIndexProperty =
+            DependencyProperty.Register("ColumnSortingIndex", typeof(int), typeof(WellCtr), new PropertyMetadata(0));
+
+
+
         //选择框Border
         public Thickness SelectBoxBorderThickness
         {

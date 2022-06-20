@@ -9,8 +9,8 @@ namespace ReactDemo
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public int MyRowCount { get; set; } = 5;
-        public int MyColumnCount { get; set; } =5;
+        public int MyRowCount { get; set; } = 3;
+        public int MyColumnCount { get; set; } =4;
        public MainWindowViewModel()
         {
             //PropertyChanged += MainWindowViewModel_PropertyChanged;

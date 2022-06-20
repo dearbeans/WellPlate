@@ -404,7 +404,8 @@ namespace ReactDemo
                     }
 
                     wellCtr.AddHandler(WellCtr.ClickEvent, new RoutedEventHandler(WellClick));
-
+                    wellCtr.RowSortingIndex = (rowIndex - 1) *this.ColumnCount + columnIndex;//行排序索引
+                    wellCtr.ColumnSortingIndex = (columnIndex - 1) * this.RowCount + rowIndex;//列排序索引
                     wellCtr.Label = $"{(char)(rowIndex + 64)}{columnIndex}";
                     wellCtr.SelectBoxBorderThickness = this.SelectBoxBorderThickness;
                     Grid.SetRow(wellCtr, rowIndex);
