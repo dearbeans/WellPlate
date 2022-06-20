@@ -1,0 +1,27 @@
+﻿<Window x:Class="ReactDemo.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ReactDemo" 
+        mc:Ignorable="d"
+        Title="MainWindow"  >
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="9*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <local:CustomCtr Grid.Row="0"  Grid.Column="0" RowHeaderFontSize="20" ColumnHeaderFontSize="20"  IsMultipleSelectMode="False" Background="LightCyan" CornerRadius="20"  RowCount="{Binding MyRowCount}"  ColumnCount="{Binding MyColumnCount}"  Height="Auto" Width="Auto" MinHeight="300" MinWidth="300" Margin="30" />
+        <StackPanel  Grid.Row="1"  Grid.Column="0" >  
+            <Button Content="增加行数" Click="Button_AddRowClick" />
+            <Button Content="增加列数" Click="Button_AddColumnClick"/>
+            <Button Content="减少行数" Click="Button_SubRowClick" />
+            <Button Content="减少列数" Click="Button_SubColumnClick"/>
+       
+        </StackPanel>
+    </Grid>
+</Window>
