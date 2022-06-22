@@ -14,21 +14,16 @@ using System.Windows.Shapes;
 
 namespace ReactDemo
 {
- 
+
     public class WellCtr : ToggleButton
     {
-
-
         public int RowSortingIndex
         {
             get { return (int)GetValue(RowSortingIndexProperty); }
             set { SetValue(RowSortingIndexProperty, value); }
         }
-
         public static readonly DependencyProperty RowSortingIndexProperty =
-            DependencyProperty.Register("RowSortingIndex", typeof(int), typeof(WellCtr), new PropertyMetadata(0));
-
-
+            DependencyProperty.Register("RowSortingIndex", typeof(int), typeof(WellCtr), new FrameworkPropertyMetadata(0));
 
         public int ColumnSortingIndex
         {
@@ -37,9 +32,7 @@ namespace ReactDemo
         }
 
         public static readonly DependencyProperty ColumnSortingIndexProperty =
-            DependencyProperty.Register("ColumnSortingIndex", typeof(int), typeof(WellCtr), new PropertyMetadata(0));
-
-
+            DependencyProperty.Register("ColumnSortingIndex", typeof(int), typeof(WellCtr), new FrameworkPropertyMetadata(0));
 
         //选择框Border
         public Thickness SelectBoxBorderThickness
@@ -51,7 +44,14 @@ namespace ReactDemo
         public static readonly DependencyProperty SelectBoxBorderThicknessProperty =
             DependencyProperty.Register("SelectBoxBorderThickness", typeof(Thickness), typeof(WellCtr), new PropertyMetadata(new Thickness(10)));
 
+        public string Text
+        {
+            get { return (string)GetValue(TextProperty); }
+            set { SetValue(TextProperty, value); }
+        }
 
+        public static readonly DependencyProperty TextProperty =
+            DependencyProperty.Register("Text", typeof(string), typeof(WellCtr), new FrameworkPropertyMetadata(string.Empty) { BindsTwoWayByDefault = true });
 
         public string Label
         {
@@ -62,14 +62,10 @@ namespace ReactDemo
         public static readonly DependencyProperty LabelProperty =
             DependencyProperty.Register("Label", typeof(string), typeof(WellCtr), new PropertyMetadata(string.Empty));
 
-
-
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
         }
-
-
         static WellCtr()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WellCtr), new FrameworkPropertyMetadata(typeof(WellCtr)));

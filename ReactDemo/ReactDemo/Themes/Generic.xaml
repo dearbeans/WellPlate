@@ -24,13 +24,11 @@
                     <Grid Margin="5" Background="Transparent" >
                         <Viewbox Stretch="Uniform">
                             <Border BorderThickness="{TemplateBinding SelectBoxBorderThickness}"  x:Name="outerBorder"  CornerRadius="{Binding Path=ActualHeight, ElementName=outerBorder}" 
-   Width="{Binding Path=ActualHeight, ElementName=outerBorder}" >
-                                <!--<Viewbox Stretch="Fill">-->
-                                    <Ellipse Fill="#FFD9E5DA" HorizontalAlignment="Center" Width="550" Height="550"  Stroke="Transparent" />
-                                <!--</Viewbox>-->
+   Width="{Binding Path=ActualHeight, ElementName=outerBorder}">
+                                <Ellipse Fill="#FFD9E5DA" HorizontalAlignment="Center" Width="550" Height="550"  Stroke="Transparent" />
                             </Border>
                         </Viewbox>
-                        <TextBlock Text="{TemplateBinding IsChecked,Converter={StaticResource boolConverter}}" Height="Auto" Width="auto" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Text="{TemplateBinding Text}" Height="Auto" Width="auto" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                     </Grid>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True" >

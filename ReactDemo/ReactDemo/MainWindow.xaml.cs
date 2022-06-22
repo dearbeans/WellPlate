@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ReactDemo
 {
@@ -34,7 +23,7 @@ namespace ReactDemo
             this.DataContext = new MainWindowViewModel();
         }
 
-   
+
 
         private void Button_AddRowClick(object sender, RoutedEventArgs e)
         {
@@ -68,9 +57,23 @@ namespace ReactDemo
 
             if (GetCursorPos(out p))//API方法
             {
-                this.Title =string.Format("GetCursorPos {0},{1}  GetPosition {2}   ,     {3}**********\r\n {4}   ,    {5}", p.X, p.Y, pp.X, pp.Y, ppp.X, ppp.Y);
+                this.Title = string.Format("GetCursorPos {0},{1}  GetPosition {2}   ,     {3}**********\r\n {4}   ,    {5}", p.X, p.Y, pp.X, pp.Y, ppp.X, ppp.Y);
                 //MessageBox.Show(string.Format("GetCursorPos {0},{1}  GetPosition {2},{3}\r\n {4},{5}", p.X, p.Y, pp.X, pp.Y, ppp.X, ppp.Y));
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var vm = this.DataContext as MainWindowViewModel;
+            var item = vm.WellCtrViewModel.Where(a => a.Label == txtb1.Text.Trim()).FirstOrDefault();
+            if (item != null)
+                item.Text = txtb2.Text;
+
+            foreach (var item1 in vm.WellCtrViewModel)
+            {
+                item1.IsChecked = !item1.IsChecked;
+            }
+
         }
     }
     public struct POINT

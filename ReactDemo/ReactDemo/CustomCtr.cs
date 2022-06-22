@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -21,6 +22,21 @@ namespace ReactDemo
         private bool _isCanMove = false;//鼠标是否移动
         private Point boxStartPoint;//起始坐标
         private List<WellCtr> _wellCtrS;//所有曹对象
+
+
+
+
+        public List<WellCtrViewModel> ItemsSource
+        {
+            get { return (List<WellCtrViewModel>)GetValue(ItemsSourceProperty); }
+            set { SetValue(ItemsSourceProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty ItemsSourceProperty =
+            DependencyProperty.Register("ItemsSource", typeof(List<WellCtrViewModel>), typeof(CustomCtr), new FrameworkPropertyMetadata(null) { BindsTwoWayByDefault = true });
+
+
 
 
         //组件内容边距Margin
@@ -213,7 +229,6 @@ namespace ReactDemo
 
         private static void ColumnCountPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-
             if (d is CustomCtr customCtr)
             {
                 if (customCtr._mainGrid != null)
@@ -242,6 +257,7 @@ namespace ReactDemo
         {
             base.OnApplyTemplate();
             _mainGrid = GetTemplateChild(PART_MAIN_GRID) as Grid;
+            var a = this.ItemsSource;
             if (this.IsMultipleSelectMode)
             {
                 _mainGrid.MouseLeftButtonDown += SelectBox_MouseLeftButtonDown;
@@ -249,6 +265,7 @@ namespace ReactDemo
             InitMainGrid();
             InitHearder();
             InitWellCtr();
+
         }
 
         private void SelectBox_MouseUp(object sender, MouseButtonEventArgs e)
@@ -281,7 +298,6 @@ namespace ReactDemo
                     {
                         if (child.Label == curLable)
                         {
-                            //child.IsChecked = !child.IsChecked;
                             break;
                         }
                         else
@@ -377,7 +393,6 @@ namespace ReactDemo
             }
             _partCanvas = new Canvas();
             _partCanvas.Opacity = 0.5;
-            //_partCanvas.MouseUp += _partCanvas_MouseUp;
             Panel.SetZIndex(_partCanvas, 100);
             Grid.SetColumn(_partCanvas, 0);
             Grid.SetRow(_partCanvas, 0);
@@ -392,10 +407,28 @@ namespace ReactDemo
 
         private void InitWellCtr()
         {
+            if (this.ItemsSource == null)
+            {
+                this.ItemsSource = new List<WellCtrViewModel>();
+            }
             for (int rowIndex = 1; rowIndex <= this.RowCount; rowIndex++)
             {
                 for (int columnIndex = 1; columnIndex <= this.ColumnCount; columnIndex++)
                 {
+                    WellCtrViewModel wellCtrViewModel;
+                    string positonLabel = $"{(char)(rowIndex + 64)}{columnIndex}";
+                    var wellCtrVM = this.ItemsSource.Find(a => a.Label == positonLabel);
+                    if (wellCtrVM == null)
+                    {
+                        wellCtrViewModel = new WellCtrViewModel();
+                        this.ItemsSource.Add(wellCtrViewModel);
+                    }
+                    else
+                    {
+                        wellCtrViewModel = wellCtrVM;
+                    }
+
+
                     WellCtr wellCtr = new WellCtr();
                     if (this.IsMultipleSelectMode)
                     {
@@ -404,9 +437,13 @@ namespace ReactDemo
                     }
 
                     wellCtr.AddHandler(WellCtr.ClickEvent, new RoutedEventHandler(WellClick));
-                    wellCtr.RowSortingIndex = (rowIndex - 1) *this.ColumnCount + columnIndex;//行排序索引
+                    SetWellCtrBinding(wellCtrViewModel, wellCtr);
+                    wellCtr.RowSortingIndex = (rowIndex - 1) * this.ColumnCount + columnIndex;//行排序索引
                     wellCtr.ColumnSortingIndex = (columnIndex - 1) * this.RowCount + rowIndex;//列排序索引
-                    wellCtr.Label = $"{(char)(rowIndex + 64)}{columnIndex}";
+
+                    wellCtr.Label = positonLabel;
+                    wellCtr.Text = wellCtr.Label;
+
                     wellCtr.SelectBoxBorderThickness = this.SelectBoxBorderThickness;
                     Grid.SetRow(wellCtr, rowIndex);
                     Grid.SetColumn(wellCtr, columnIndex);
@@ -414,6 +451,15 @@ namespace ReactDemo
                 }
             }
             _wellCtrS = GetChildObjects<WellCtr>(this._mainGrid);
+        }
+
+        private static void SetWellCtrBinding(WellCtrViewModel wellCtrViewModel, WellCtr wellCtr)
+        {
+            wellCtr.SetBinding(WellCtr.RowSortingIndexProperty, new Binding("RowSortingIndex") { Source = wellCtrViewModel, Mode = BindingMode.OneWayToSource });
+            wellCtr.SetBinding(WellCtr.ColumnSortingIndexProperty, new Binding("ColumnSortingIndex") { Source = wellCtrViewModel, Mode = BindingMode.OneWayToSource });
+            wellCtr.SetBinding(WellCtr.LabelProperty, new Binding("Label") { Source = wellCtrViewModel, Mode = BindingMode.OneWayToSource });
+            wellCtr.SetBinding(WellCtr.TextProperty, new Binding("Text") { Source = wellCtrViewModel });
+            wellCtr.SetBinding(WellCtr.IsCheckedProperty, new Binding("IsChecked") { Source = wellCtrViewModel });
         }
 
         private void WellClick(object sender, RoutedEventArgs e)

@@ -11,8 +11,12 @@ namespace ReactDemo
 
         public int MyRowCount { get; set; } = 3;
         public int MyColumnCount { get; set; } =4;
-       public MainWindowViewModel()
+
+        public List<WellCtrViewModel> WellCtrViewModel { get; set; } 
+        public MainWindowViewModel()
         {
+          
+            //this.CustomCtrViewModel = new CustomCtrViewModel();
             //PropertyChanged += MainWindowViewModel_PropertyChanged;
         }
 

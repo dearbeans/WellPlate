@@ -6,22 +6,24 @@
         xmlns:local="clr-namespace:ReactDemo" 
         mc:Ignorable="d"
         Title="MainWindow"  >
-    <Grid>
+    <Grid Margin="50" >
         <Grid.RowDefinitions>
-            <RowDefinition Height="9*"/>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="8*"/>
+            <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <local:CustomCtr Grid.Row="0"  Grid.Column="0" RowHeaderFontSize="20" ColumnHeaderFontSize="20"  IsMultipleSelectMode="False" Background="LightCyan" CornerRadius="20"  RowCount="{Binding MyRowCount}"  ColumnCount="{Binding MyColumnCount}"  Height="Auto" Width="Auto" MinHeight="300" MinWidth="300" Margin="30" />
-        <StackPanel  Grid.Row="1"  Grid.Column="0" >  
+        <local:CustomCtr  ItemsSource="{Binding WellCtrViewModel}" Grid.Row="0"  Grid.Column="0" RowHeaderFontSize="20" ColumnHeaderFontSize="20"  IsMultipleSelectMode="True" Background="LightCyan" CornerRadius="20"  RowCount="{Binding MyRowCount}"  ColumnCount="{Binding MyColumnCount}"  Height="Auto" Width="Auto" MinHeight="300" MinWidth="300" Margin="30" />
+        <StackPanel  Grid.Row="1"  Grid.Column="0" >
+            <TextBox x:Name="txtb1"/>
+            <TextBox x:Name="txtb2"/>
+            <Button Content="测试" Click="Button_Click" />
             <Button Content="增加行数" Click="Button_AddRowClick" />
             <Button Content="增加列数" Click="Button_AddColumnClick"/>
             <Button Content="减少行数" Click="Button_SubRowClick" />
             <Button Content="减少列数" Click="Button_SubColumnClick"/>
-       
         </StackPanel>
     </Grid>
 </Window>
