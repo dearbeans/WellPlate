@@ -107,4 +107,10 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <ControlTemplate x:Key="ctm" TargetType="{x:Type local:WellCtr}">
+        <Grid>
+            <Ellipse Fill="Bisque" Width="100" Height="100"/>
+        </Grid>
+    </ControlTemplate>
 </ResourceDictionary>

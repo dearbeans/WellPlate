@@ -6,39 +6,51 @@
         xmlns:local="clr-namespace:WpfAppTest"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        
-        <TextBlock Grid.Row="0" Grid.Column="1" Text="1"/>
-        <TextBlock Grid.Row="0" Grid.Column="2" Text="2"/>
-        <TextBlock Grid.Row="0" Grid.Column="3" Text="3"/>
-        <TextBlock Grid.Row="0" Grid.Column="4" Text="4"/>
-        <TextBlock Grid.Row="0" Grid.Column="5" Text="5"/>
-        <TextBlock Grid.Row="0" Grid.Column="6" Text="6"/>
+    <Window.Resources>
 
+        <!--Create two DataTemplate objects to be 
+  selected by the DataTemplateSelector.-->
+        <DataTemplate x:Key="numberTemplate">
+            <Grid>
+                <Rectangle Stroke="Black" />
+                <TextBlock Margin="5" Text="{Binding}" FontSize="18"/>
+            </Grid>
+        </DataTemplate>
 
-        <TextBlock Grid.Column="0" Grid.Row="1" Text="A"/>
-        <TextBlock Grid.Column="0" Grid.Row="2" Text="B"/>
-        <TextBlock Grid.Column="0" Grid.Row="3" Text="C"/>
-        <TextBlock Grid.Column="0" Grid.Row="4" Text="D"/>
-        <TextBlock Grid.Column="0" Grid.Row="5" Text="E"/>
-        <TextBlock Grid.Column="0" Grid.Row="6" Text="F"/>
-    </Grid>
+        <DataTemplate x:Key="largeNumberTemplate">
+            <Grid>
+                <Ellipse Stroke="Green" StrokeThickness="4"/>
+                <TextBlock Margin="10" Text="{Binding}" FontSize="24" 
+                 Foreground="Red" FontWeight="Bold" />
+            </Grid>
+        </DataTemplate>
+
+        <local:NumberDataTemplateSelector x:Key="numberTemplateSelector"
+                                    NumberTemplate="{StaticResource numberTemplate}"
+                                    LargeNumberTemplate="{StaticResource largeNumberTemplate}"/>
+
+    </Window.Resources>
+    <StackPanel>
+
+        <!--Bind the content of the Label to the selected item 
+  in the ComboBox.-->
+        <Label  Foreground="Black"
+          Content="{Binding ElementName=numberList, Path=SelectedItem.Content}"
+          ContentTemplateSelector="{StaticResource numberTemplateSelector}">
+        </Label>
+
+        <ComboBox Name="numberList">
+            <ComboBoxItem>1</ComboBoxItem>
+            <ComboBoxItem>2</ComboBoxItem>
+            <ComboBoxItem>3</ComboBoxItem>
+            <ComboBoxItem>4</ComboBoxItem>
+            <ComboBoxItem>5</ComboBoxItem>
+            <ComboBoxItem>6</ComboBoxItem>
+            <ComboBoxItem IsSelected="True">7</ComboBoxItem>
+            <ComboBoxItem>8</ComboBoxItem>
+            <ComboBoxItem>9</ComboBoxItem>
+            <ComboBoxItem>10</ComboBoxItem>
+        </ComboBox>
+
+    </StackPanel>
 </Window>

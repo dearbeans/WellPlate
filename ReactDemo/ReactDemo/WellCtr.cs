@@ -33,6 +33,9 @@ namespace ReactDemo
             if(d is WellCtr wellCtr){
                 var shapeStyle = Application.Current.Resources[wellCtr.Shape.ToString()];
                 wellCtr.Style = shapeStyle as Style;
+                
+                //var shapeStyle = Application.Current.Resources["ctm"];
+                //wellCtr.Template = shapeStyle as ControlTemplate;
             }
         }
 
