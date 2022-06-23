@@ -17,6 +17,25 @@ namespace ReactDemo
 
     public class WellCtr : ToggleButton
     {
+
+
+        public ShapeType Shape
+        {
+            get { return (ShapeType)GetValue(ShapeProperty); }
+            set { SetValue(ShapeProperty, value); }
+        }
+
+        public static readonly DependencyProperty ShapeProperty =
+            DependencyProperty.Register("Shape", typeof(ShapeType), typeof(WellCtr), new FrameworkPropertyMetadata(ShapeType.Default, ShapePropertyChangedCallback) { BindsTwoWayByDefault = true });
+
+        private static void ShapePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if(d is WellCtr wellCtr){
+                var shapeStyle = Application.Current.Resources[wellCtr.Shape.ToString()];
+                wellCtr.Style = shapeStyle as Style;
+            }
+        }
+
         public int RowSortingIndex
         {
             get { return (int)GetValue(RowSortingIndexProperty); }

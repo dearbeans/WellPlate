@@ -10,6 +10,7 @@ namespace ReactDemo
         public string Label { get; set; }
         public string Text { get; set; }
         public bool IsChecked { get; set; }
+        public ShapeType Shape { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

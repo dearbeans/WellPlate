@@ -26,13 +26,35 @@ namespace ReactDemo
 
 
 
+
+        public ShapeType DefaultShape
+        {
+            get { return (ShapeType)GetValue(DefaultShapeProperty); }
+            set { SetValue(DefaultShapeProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for DefaultShape.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty DefaultShapeProperty =
+            DependencyProperty.Register("DefaultShape", typeof(ShapeType), typeof(CustomCtr), new FrameworkPropertyMetadata(ShapeType.Default, DefaultShapePropertyChangedCallback));
+
+        private static void DefaultShapePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is CustomCtr customCtr)
+            {
+                if (customCtr._mainGrid != null)
+                {
+                    customCtr.ClearMainGrid();
+                    customCtr.OnApplyTemplate();
+                }
+            }
+        }
+
         public List<WellCtrViewModel> ItemsSource
         {
             get { return (List<WellCtrViewModel>)GetValue(ItemsSourceProperty); }
             set { SetValue(ItemsSourceProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for ItemsSource.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty ItemsSourceProperty =
             DependencyProperty.Register("ItemsSource", typeof(List<WellCtrViewModel>), typeof(CustomCtr), new FrameworkPropertyMetadata(null) { BindsTwoWayByDefault = true });
 
@@ -428,7 +450,6 @@ namespace ReactDemo
                         wellCtrViewModel = wellCtrVM;
                     }
 
-
                     WellCtr wellCtr = new WellCtr();
                     if (this.IsMultipleSelectMode)
                     {
@@ -438,6 +459,7 @@ namespace ReactDemo
 
                     wellCtr.AddHandler(WellCtr.ClickEvent, new RoutedEventHandler(WellClick));
                     SetWellCtrBinding(wellCtrViewModel, wellCtr);
+                    wellCtr.Shape = this.DefaultShape;
                     wellCtr.RowSortingIndex = (rowIndex - 1) * this.ColumnCount + columnIndex;//行排序索引
                     wellCtr.ColumnSortingIndex = (columnIndex - 1) * this.RowCount + rowIndex;//列排序索引
 
@@ -459,7 +481,8 @@ namespace ReactDemo
             wellCtr.SetBinding(WellCtr.ColumnSortingIndexProperty, new Binding("ColumnSortingIndex") { Source = wellCtrViewModel, Mode = BindingMode.OneWayToSource });
             wellCtr.SetBinding(WellCtr.LabelProperty, new Binding("Label") { Source = wellCtrViewModel, Mode = BindingMode.OneWayToSource });
             wellCtr.SetBinding(WellCtr.TextProperty, new Binding("Text") { Source = wellCtrViewModel });
-            wellCtr.SetBinding(WellCtr.IsCheckedProperty, new Binding("IsChecked") { Source = wellCtrViewModel });
+            wellCtr.SetBinding(WellCtr.IsCheckedProperty, new Binding("IsChecked") { Source = wellCtrViewModel,Mode=BindingMode.TwoWay });
+            wellCtr.SetBinding(WellCtr.ShapeProperty, new Binding("Shape") { Source = wellCtrViewModel });
         }
 
         private void WellClick(object sender, RoutedEventArgs e)

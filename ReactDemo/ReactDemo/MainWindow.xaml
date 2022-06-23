@@ -15,7 +15,7 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <local:CustomCtr  ItemsSource="{Binding WellCtrViewModel}" Grid.Row="0"  Grid.Column="0" RowHeaderFontSize="20" ColumnHeaderFontSize="20"  IsMultipleSelectMode="True" Background="LightCyan" CornerRadius="20"  RowCount="{Binding MyRowCount}"  ColumnCount="{Binding MyColumnCount}"  Height="Auto" Width="Auto" MinHeight="300" MinWidth="300" Margin="30" />
+        <local:CustomCtr  ItemsSource="{Binding WellCtrViewModel}" DefaultShape="Default" Grid.Row="0"  Grid.Column="0" RowHeaderFontSize="20" ColumnHeaderFontSize="20"  IsMultipleSelectMode="True" Background="LightCyan" CornerRadius="20"  RowCount="{Binding MyRowCount}"  ColumnCount="{Binding MyColumnCount}"  Height="Auto" Width="Auto" MinHeight="300" MinWidth="300" Margin="30" />
         <StackPanel  Grid.Row="1"  Grid.Column="0" >
             <TextBox x:Name="txtb1"/>
             <TextBox x:Name="txtb2"/>

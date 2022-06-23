@@ -45,4 +45,66 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style x:Key="WithText"  TargetType="{x:Type local:WellCtr}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate  TargetType="{x:Type local:WellCtr}">
+                  
+                    <Grid Margin="5" Background="Transparent" >
+                        <Viewbox Stretch="Uniform">
+                            <Border BorderThickness="{TemplateBinding SelectBoxBorderThickness}"  x:Name="outerBorder"  CornerRadius="{Binding Path=ActualHeight, ElementName=outerBorder}" 
+   Width="{Binding Path=ActualHeight, ElementName=outerBorder}">
+                                <Ellipse Fill="LightGreen" HorizontalAlignment="Center" Width="550" Height="550"  Stroke="Transparent" />
+                            </Border>
+                        </Viewbox>
+                        <TextBlock Text="{TemplateBinding Text}" Height="Auto" Width="auto" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+                      
+                        <Trigger Property="IsChecked" Value="True" >
+                            <Setter TargetName="outerBorder"   Property="BorderBrush" Value="red"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="outerBorder"  Property="BorderBrush" Value="white"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="outerBorder"  Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="WithText1"  TargetType="{x:Type local:WellCtr}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate  TargetType="{x:Type local:WellCtr}">
+
+                    <Grid Margin="5" Background="Transparent" >
+                        <Viewbox Stretch="Uniform">
+                            <Border BorderThickness="{TemplateBinding SelectBoxBorderThickness}"  x:Name="outerBorder"  CornerRadius="{Binding Path=ActualHeight, ElementName=outerBorder}" 
+   Width="{Binding Path=ActualHeight, ElementName=outerBorder}">
+                                <Ellipse Fill="LightPink" HorizontalAlignment="Center" Width="550" Height="550"  Stroke="Transparent" />
+                            </Border>
+                        </Viewbox>
+                        <TextBlock Text="{TemplateBinding Text}" Height="Auto" Width="auto" Foreground="Black" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                    <ControlTemplate.Triggers>
+
+                        <Trigger Property="IsChecked" Value="True" >
+                            <Setter TargetName="outerBorder"   Property="BorderBrush" Value="red"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="outerBorder"  Property="BorderBrush" Value="white"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="{x:Null}">
+                            <Setter TargetName="outerBorder"  Property="BorderBrush" Value="Transparent"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

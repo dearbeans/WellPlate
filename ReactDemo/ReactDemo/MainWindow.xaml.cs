@@ -67,12 +67,28 @@ namespace ReactDemo
             var vm = this.DataContext as MainWindowViewModel;
             var item = vm.WellCtrViewModel.Where(a => a.Label == txtb1.Text.Trim()).FirstOrDefault();
             if (item != null)
-                item.Text = txtb2.Text;
-
-            foreach (var item1 in vm.WellCtrViewModel)
             {
-                item1.IsChecked = !item1.IsChecked;
+                if (txtb2.Text == "0")
+                {
+                    item.Shape = ShapeType.Default;
+                }
+                else if(txtb2.Text == "1")
+                {
+                    item.Shape = ShapeType.WithText;
+                }
+                else if (txtb2.Text == "2")
+                {
+                    item.Shape = ShapeType.WithText1;
+                }
+                //item.Text = txtb2.Text;
+               
             }
+                
+
+            //foreach (var item1 in vm.WellCtrViewModel)
+            //{
+            //    item1.IsChecked = !item1.IsChecked;
+            //}
 
         }
     }
