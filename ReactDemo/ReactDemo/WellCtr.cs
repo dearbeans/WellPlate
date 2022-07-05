@@ -17,6 +17,23 @@ namespace ReactDemo
 
     public class WellCtr : ToggleButton
     {
+        public Brush CheckedBorderBrush
+        {
+            get { return (Brush)GetValue(CheckedBorderBrushProperty); }
+            set { SetValue(CheckedBorderBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty CheckedBorderBrushProperty =
+            DependencyProperty.Register("CheckedBorderBrush", typeof(Brush), typeof(WellCtr), new FrameworkPropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AACAF0"))) { BindsTwoWayByDefault = true });
+
+        public Brush UnCheckedBorderBrush
+        {
+            get { return (Brush)GetValue(UnCheckedBorderBrushProperty); }
+            set { SetValue(UnCheckedBorderBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty UnCheckedBorderBrushProperty =
+            DependencyProperty.Register("UnCheckedBorderBrush", typeof(Brush), typeof(WellCtr), new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Transparent)) { BindsTwoWayByDefault = true });
 
 
         public ShapeType Shape
@@ -30,10 +47,11 @@ namespace ReactDemo
 
         private static void ShapePropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            if(d is WellCtr wellCtr){
+            if (d is WellCtr wellCtr)
+            {
                 var shapeStyle = Application.Current.Resources[wellCtr.Shape.ToString()];
                 wellCtr.Style = shapeStyle as Style;
-                
+
                 //var shapeStyle = Application.Current.Resources["ctm"];
                 //wellCtr.Template = shapeStyle as ControlTemplate;
             }
@@ -91,6 +109,7 @@ namespace ReactDemo
         static WellCtr()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(WellCtr), new FrameworkPropertyMetadata(typeof(WellCtr)));
+            BackgroundProperty.OverrideMetadata(typeof(WellCtr), new FrameworkPropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"))));
         }
     }
 }

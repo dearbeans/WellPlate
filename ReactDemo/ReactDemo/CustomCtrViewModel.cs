@@ -7,9 +7,7 @@ namespace ReactDemo
 {
    public class CustomCtrViewModel:INotifyPropertyChanged
     {
-
-
-        public List<WellCtrViewModel> WellCtrViewModel { get; set; }
+        public IList<WellCtrViewModel> WellCtrViewModel { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
     }

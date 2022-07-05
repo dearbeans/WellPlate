@@ -24,7 +24,20 @@ namespace ReactDemo
         private List<WellCtr> _wellCtrS;//所有曹对象
 
 
+        public static readonly RoutedEvent WellCtrClickEvent = EventManager.RegisterRoutedEvent("WellCtrClick",
+RoutingStrategy.Bubble, typeof(RoutedEventHandler), typeof(CustomCtr));
 
+        /// <summary>
+        /// 事件包装器
+        /// </summary>
+        public event RoutedEventHandler WellCtrClick
+        {
+            add { this.AddHandler(WellCtrClickEvent, value); }
+            remove
+            {
+                this.RemoveHandler(WellCtrClickEvent, value);
+            }
+        }
 
 
         public ShapeType DefaultShape
@@ -33,7 +46,6 @@ namespace ReactDemo
             set { SetValue(DefaultShapeProperty, value); }
         }
 
-        // Using a DependencyProperty as the backing store for DefaultShape.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty DefaultShapeProperty =
             DependencyProperty.Register("DefaultShape", typeof(ShapeType), typeof(CustomCtr), new FrameworkPropertyMetadata(ShapeType.Default, DefaultShapePropertyChangedCallback));
 
@@ -59,6 +71,14 @@ namespace ReactDemo
             DependencyProperty.Register("ItemsSource", typeof(List<WellCtrViewModel>), typeof(CustomCtr), new FrameworkPropertyMetadata(null) { BindsTwoWayByDefault = true });
 
 
+        public Brush DefaultWellBackground
+        {
+            get { return (Brush)GetValue(DefaultWellBackgroundProperty); }
+            set { SetValue(DefaultWellBackgroundProperty, value); }
+        }
+
+        public static readonly DependencyProperty DefaultWellBackgroundProperty =
+            DependencyProperty.Register("DefaultWellBackground", typeof(Brush), typeof(CustomCtr), new FrameworkPropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFFFFF"))) { BindsTwoWayByDefault = true });
 
 
         //组件内容边距Margin
@@ -101,7 +121,7 @@ namespace ReactDemo
         }
 
         public static readonly DependencyProperty RowHeaderForegroundProperty =
-            DependencyProperty.Register("RowHeaderForeground", typeof(Brush), typeof(CustomCtr), new FrameworkPropertyMetadata(Brushes.LightGray, HeaderForegroundPropertyChangedCallback));
+            DependencyProperty.Register("RowHeaderForeground", typeof(Brush), typeof(CustomCtr), new FrameworkPropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7D7878")), HeaderForegroundPropertyChangedCallback));
 
         private static void HeaderForegroundPropertyChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -121,7 +141,7 @@ namespace ReactDemo
         }
 
         public static readonly DependencyProperty ColumnHeaderForegroundProperty =
-            DependencyProperty.Register("ColumnHeaderForeground", typeof(Brush), typeof(CustomCtr), new FrameworkPropertyMetadata(Brushes.LightGray, HeaderForegroundPropertyChangedCallback));
+            DependencyProperty.Register("ColumnHeaderForeground", typeof(Brush), typeof(CustomCtr), new FrameworkPropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#7D7878")), HeaderForegroundPropertyChangedCallback));
 
         public double RowHeaderFontSize
         {
@@ -173,8 +193,6 @@ namespace ReactDemo
 
         public static readonly DependencyProperty CornerRadiusProperty =
             DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(CustomCtr), new FrameworkPropertyMetadata(new CornerRadius(0, 0, 0, 0)));
-
-
 
         /// <summary>
         /// 是否开启多选模式
@@ -261,6 +279,33 @@ namespace ReactDemo
             }
         }
 
+        public Brush WellCheckedBorderBrush
+        {
+            get { return (Brush)GetValue(WellCheckedBorderBrushProperty); }
+            set { SetValue(WellCheckedBorderBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty WellCheckedBorderBrushProperty =
+            DependencyProperty.Register("WellCheckedBorderBrush", typeof(Brush), typeof(CustomCtr), new PropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#AACAF0"))));
+
+        public Brush WellUnCheckedBorderBrush
+        {
+            get { return (Brush)GetValue(WellUnCheckedBorderBrushProperty); }
+            set { SetValue(WellUnCheckedBorderBrushProperty, value); }
+        }
+
+        public static readonly DependencyProperty WellUnCheckedBorderBrushProperty =
+            DependencyProperty.Register("WellUnCheckedBorderBrush", typeof(Brush), typeof(CustomCtr), new PropertyMetadata(new SolidColorBrush(Colors.Transparent)));
+
+
+        public Thickness WellMargin
+        {
+            get { return (Thickness)GetValue(WellMarginProperty); }
+            set { SetValue(WellMarginProperty, value); }
+        }
+
+        public static readonly DependencyProperty WellMarginProperty =
+            DependencyProperty.Register("WellMargin", typeof(Thickness), typeof(CustomCtr), new PropertyMetadata(new Thickness(1)));
 
 
         private void ClearMainGrid()
@@ -272,14 +317,12 @@ namespace ReactDemo
             _mainGrid.Children.Clear();
             _mainGrid.RowDefinitions.Clear();
             _mainGrid.ColumnDefinitions.Clear();
-
         }
 
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             _mainGrid = GetTemplateChild(PART_MAIN_GRID) as Grid;
-            var a = this.ItemsSource;
             if (this.IsMultipleSelectMode)
             {
                 _mainGrid.MouseLeftButtonDown += SelectBox_MouseLeftButtonDown;
@@ -464,9 +507,13 @@ namespace ReactDemo
                     wellCtr.ColumnSortingIndex = (columnIndex - 1) * this.RowCount + rowIndex;//列排序索引
 
                     wellCtr.Label = positonLabel;
-                    wellCtr.Text = wellCtr.Label;
+                    //wellCtr.Text = wellCtr.Label;
 
+                    wellCtr.CheckedBorderBrush = this.WellCheckedBorderBrush;
+                    wellCtr.UnCheckedBorderBrush = this.WellUnCheckedBorderBrush;
                     wellCtr.SelectBoxBorderThickness = this.SelectBoxBorderThickness;
+                    wellCtr.Background = this.DefaultWellBackground;
+                    wellCtr.Margin = this.WellMargin;
                     Grid.SetRow(wellCtr, rowIndex);
                     Grid.SetColumn(wellCtr, columnIndex);
                     _mainGrid.Children.Add(wellCtr);
@@ -481,12 +528,14 @@ namespace ReactDemo
             wellCtr.SetBinding(WellCtr.ColumnSortingIndexProperty, new Binding("ColumnSortingIndex") { Source = wellCtrViewModel, Mode = BindingMode.OneWayToSource });
             wellCtr.SetBinding(WellCtr.LabelProperty, new Binding("Label") { Source = wellCtrViewModel, Mode = BindingMode.OneWayToSource });
             wellCtr.SetBinding(WellCtr.TextProperty, new Binding("Text") { Source = wellCtrViewModel });
-            wellCtr.SetBinding(WellCtr.IsCheckedProperty, new Binding("IsChecked") { Source = wellCtrViewModel,Mode=BindingMode.TwoWay });
+            wellCtr.SetBinding(WellCtr.IsCheckedProperty, new Binding("IsChecked") { Source = wellCtrViewModel, Mode = BindingMode.TwoWay });
             wellCtr.SetBinding(WellCtr.ShapeProperty, new Binding("Shape") { Source = wellCtrViewModel });
+            wellCtr.SetBinding(WellCtr.BackgroundProperty, new Binding("Background") { Source = wellCtrViewModel });
         }
 
         private void WellClick(object sender, RoutedEventArgs e)
         {
+            RaiseEvent(new RoutedEventArgs() { RoutedEvent = WellCtrClickEvent });
             if (sender is WellCtr wellCtr)
             {
                 if (!IsMultipleSelectMode)
@@ -501,7 +550,6 @@ namespace ReactDemo
                         {
                             item.IsChecked = false;
                         }
-
                     }
                 }
             }
@@ -633,7 +681,9 @@ namespace ReactDemo
         static CustomCtr()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CustomCtr), new FrameworkPropertyMetadata(typeof(CustomCtr)));
-            BackgroundProperty.OverrideMetadata(typeof(CustomCtr), new FrameworkPropertyMetadata(new SolidColorBrush(Color.FromRgb(178, 241, 255))));
+            BackgroundProperty.OverrideMetadata(typeof(CustomCtr), new FrameworkPropertyMetadata(new SolidColorBrush((Color)ColorConverter.ConvertFromString("#F0F0F0"))));
+            BorderThicknessProperty.OverrideMetadata(typeof(CustomCtr), new FrameworkPropertyMetadata(new Thickness(1)));
+            BorderBrushProperty.OverrideMetadata(typeof(CustomCtr), new FrameworkPropertyMetadata(new SolidColorBrush(Colors.Gray)));
         }
     }
 }

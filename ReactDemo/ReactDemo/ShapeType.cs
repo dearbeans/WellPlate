@@ -4,10 +4,8 @@ using System.Text;
 
 namespace ReactDemo
 {
-  public  enum ShapeType
+    public enum ShapeType
     {
-        Default=0,
-        WithText=1,
-        WithText1=2
+        Default = 0,
     }
 }
